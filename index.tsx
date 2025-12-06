@@ -2,13 +2,9 @@ import React, { useState } from "react";
 import { createRoot } from "react-dom/client";
 import { GoogleGenAI, Type } from "@google/genai";
 
-// Declare process for TypeScript to avoid "Cannot find name 'process'" error
-declare var process: {
-  env: {
-    API_KEY: string;
-    [key: string]: any;
-  }
-};
+// Ensure 'process' is available in this module scope by referencing the global window object.
+// This prevents ReferenceErrors in strict mode if the global is not automatically picked up.
+const process = (window as any).process;
 
 // --- Constants & Configuration ---
 
@@ -99,8 +95,6 @@ const App = () => {
     setShowAnswers({});
 
     try {
-      // The API key is obtained from the environment variable process.env.API_KEY.
-      // This is polyfilled in index.html.
       const apiKey = process.env.API_KEY;
       
       if (!apiKey || apiKey === "YOUR_API_KEY_HERE") {

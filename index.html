@@ -8,29 +8,30 @@
     <!-- Babel for in-browser compilation -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-    <!-- Polyfill process.env -->
+    <!-- Polyfill process.env safely -->
     <script>
-      // Define process globally using var so it is accessible in all scopes
-      var process = {
+      window.process = {
         env: {
           NODE_ENV: 'development',
-          // IMPORTANT: Replace this with your actual API key
+          // API Key inserted
           API_KEY: "AIzaSyBdMCdrWEQ-EMvDULQFVNR8IYXRM24mCdc" 
         }
       };
     </script>
 
     <script type="importmap">
-    {
-      "imports": {
-        "react": "https://esm.sh/react@18.2.0",
-        "react/": "https://esm.sh/react@18.2.0/",
-        "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
-        "react-dom/": "https://esm.sh/react-dom@18.2.0/",
-        "@google/genai": "https://esm.sh/@google/genai@0.1.1"
-      }
-    }
-    </script>
+{
+  "imports": {
+    "react": "https://esm.sh/react@18.2.0?dev",
+    "react/jsx-runtime": "https://esm.sh/react@18.2.0/jsx-runtime?dev",
+    "react-dom/client": "https://esm.sh/react-dom@18.2.0/client?dev",
+    "react-dom": "https://esm.sh/react-dom@18.2.0?dev",
+    "@google/genai": "https://esm.sh/@google/genai@0.1.1",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.1/",
+    "react/": "https://aistudiocdn.com/react@^19.2.1/"
+  }
+}
+</script>
 </head>
 <body>
     <div id="root"></div>
