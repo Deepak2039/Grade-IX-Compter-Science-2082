@@ -1,7 +1,6 @@
-
 import React, { useState } from "react";
 import { createRoot } from "react-dom/client";
-import { GoogleGenAI, Type, SchemaType } from "@google/genai";
+import { GoogleGenAI, Type } from "@google/genai";
 
 // --- Constants & Configuration ---
 
@@ -87,17 +86,22 @@ const App = () => {
   const [showAnswers, setShowAnswers] = useState<Record<number, boolean>>({});
 
   const generateQuestions = async () => {
-    if (!process.env.API_KEY) {
-      alert("API Key is missing!");
-      return;
-    }
-
     setLoading(true);
     setQuestions([]);
     setShowAnswers({});
 
     try {
-      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+      // Access API key from globally polyfilled process.env
+      // Note: window.process is set in index.html
+      const apiKey = process.env.API_KEY || "";
+      
+      if (!apiKey || apiKey === "YOUR_API_KEY_HERE") {
+        alert("API Key is missing or invalid! Please edit index.html to add your Gemini API Key.");
+        setLoading(false);
+        return;
+      }
+
+      const ai = new GoogleGenAI({ apiKey });
       
       const unitData = CURRICULUM.find((u) => u.id === selectedUnit);
       if (!unitData) return;
@@ -204,7 +208,7 @@ const App = () => {
       }
     } catch (error) {
       console.error("Error generating questions:", error);
-      alert("Failed to generate questions. The request might have timed out due to the large number of questions. Try selecting 'Full Curriculum' for a smaller set or try again.");
+      alert("Failed to generate questions. Please check the console for details.");
     } finally {
       setLoading(false);
     }
@@ -710,5 +714,16 @@ const App = () => {
   );
 };
 
-const root = createRoot(document.getElementById("root")!);
-root.render(<App />);
+// Direct render with safety check
+const rootElement = document.getElementById("root");
+if (rootElement) {
+    try {
+      const root = createRoot(rootElement);
+      root.render(<App />);
+    } catch (e) {
+      console.error("Failed to render app:", e);
+      rootElement.innerHTML = '<div style="color:red; padding:20px;">Failed to load application. Check console for details.</div>';
+    }
+} else {
+    console.error("Root element not found");
+}

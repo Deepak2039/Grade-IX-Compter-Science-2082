@@ -4,20 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Grade 9 Computer Science</title>
+    
+    <!-- Babel for in-browser compilation -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Polyfill process.env for the SDK and React -->
+    <script>
+      // Ensure 'process' is defined globally for libraries that expect it
+      window.process = {
+        env: {
+          NODE_ENV: 'development',
+          // IMPORTANT: If deploying to GitHub Pages, paste your API Key below.
+          API_KEY: "YOUR_API_KEY_HERE" 
+        }
+      };
+    </script>
+
     <script type="importmap">
     {
       "imports": {
-        "react-dom/client": "https://aistudiocdn.com/react-dom@^19.2.1/client",
-        "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.1/",
-        "@google/genai": "https://aistudiocdn.com/@google/genai@^1.31.0",
-        "react/": "https://aistudiocdn.com/react@^19.2.1/",
-        "react": "https://aistudiocdn.com/react@^19.2.1"
+        "react": "https://esm.sh/react@18.2.0",
+        "react/": "https://esm.sh/react@18.2.0/",
+        "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+        "react-dom/": "https://esm.sh/react-dom@18.2.0/",
+        "@google/genai": "https://esm.sh/@google/genai@0.1.1"
       }
     }
     </script>
 </head>
 <body>
     <div id="root"></div>
-    <script type="module" src="index.tsx"></script>
+    
+    <!-- Main Application Script -->
+    <script type="text/babel" data-type="module" data-presets="react,typescript" src="index.tsx"></script>
 </body>
 </html>
