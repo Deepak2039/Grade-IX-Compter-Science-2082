@@ -2,6 +2,14 @@ import React, { useState } from "react";
 import { createRoot } from "react-dom/client";
 import { GoogleGenAI, Type } from "@google/genai";
 
+// Declare process for TypeScript to avoid "Cannot find name 'process'" error
+declare var process: {
+  env: {
+    API_KEY: string;
+    [key: string]: any;
+  }
+};
+
 // --- Constants & Configuration ---
 
 const CURRICULUM = [
@@ -91,9 +99,9 @@ const App = () => {
     setShowAnswers({});
 
     try {
-      // Access API key from globally polyfilled process.env
-      // Note: window.process is set in index.html
-      const apiKey = process.env.API_KEY || "";
+      // The API key is obtained from the environment variable process.env.API_KEY.
+      // This is polyfilled in index.html.
+      const apiKey = process.env.API_KEY;
       
       if (!apiKey || apiKey === "YOUR_API_KEY_HERE") {
         alert("API Key is missing or invalid! Please edit index.html to add your Gemini API Key.");
@@ -714,16 +722,11 @@ const App = () => {
   );
 };
 
-// Direct render with safety check
+// Direct render without wrapping try-catch (let errors bubble to console)
 const rootElement = document.getElementById("root");
 if (rootElement) {
-    try {
-      const root = createRoot(rootElement);
-      root.render(<App />);
-    } catch (e) {
-      console.error("Failed to render app:", e);
-      rootElement.innerHTML = '<div style="color:red; padding:20px;">Failed to load application. Check console for details.</div>';
-    }
+    const root = createRoot(rootElement);
+    root.render(<App />);
 } else {
     console.error("Root element not found");
 }

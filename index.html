@@ -8,14 +8,14 @@
     <!-- Babel for in-browser compilation -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-    <!-- Polyfill process.env for the SDK and React -->
+    <!-- Polyfill process.env -->
     <script>
-      // Ensure 'process' is defined globally for libraries that expect it
-      window.process = {
+      // Define process globally using var so it is accessible in all scopes
+      var process = {
         env: {
           NODE_ENV: 'development',
-          // IMPORTANT: If deploying to GitHub Pages, paste your API Key below.
-          API_KEY: "AIzaSyBdMCdrWEQ-EMvDULQFVNR8IYXRM24mCdc" 
+          // IMPORTANT: Replace this with your actual API key
+          API_KEY: "YOUR_API_KEY_HERE" 
         }
       };
     </script>
